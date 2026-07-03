@@ -7,20 +7,16 @@ import Navbar from "@/components/Navbar";
 import DashboardCards from "@/components/DashboardCards";
 import BooksTable from "@/components/BooksTable";
 import SearchBar from "@/components/SearchBar";
-import AddBookModal from "@/components/AddBookModal";
 
 import { books as initialBooks } from "@/data/books";
 import { Book } from "@/types/book";
 
 export default function Home() {
 
-  const [books, setBooks] = useState<Book[]>(initialBooks);
+  const [books] = useState<Book[]>(initialBooks);
+
   const [search, setSearch] = useState("");
-
-  const addBook = (book: Book) => {
-    setBooks([...books, book]);
-  };
-
+               
   const filteredBooks = useMemo(() => {
 
     return books.filter((book) => {
@@ -63,18 +59,10 @@ export default function Home() {
 
             </div>
 
-            <div className="flex items-center gap-4">
-
-              <SearchBar
-                search={search}
-                setSearch={setSearch}
-              />
-
-              <AddBookModal
-                onAdd={addBook}
-              />
-
-            </div>
+            <SearchBar
+              search={search}
+              setSearch={setSearch}
+            />
 
           </div>
 
