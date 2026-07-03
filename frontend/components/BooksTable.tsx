@@ -1,19 +1,33 @@
 "use client";
 
-import { books } from "@/data/books";
+import { Book } from "@/types/book";
 import { Pencil, Trash2 } from "lucide-react";
 
-export default function BooksTable() {
+interface Props {
+  books: Book[];
+}
+
+export default function BooksTable({ books }: Props) {
   return (
-    <div className="mt-10 bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
+    <div className="mt-8 bg-slate-900 rounded-2xl border border-slate-800 overflow-hidden">
 
       <div className="flex justify-between items-center p-6 border-b border-slate-800">
 
-        <h2 className="text-2xl font-bold">
-          Library Books
-        </h2>
+        <div>
 
-        <button className="bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-xl transition">
+          <h2 className="text-2xl font-bold">
+            Library Books
+          </h2>
+
+          <p className="text-slate-400">
+            Manage your collection
+          </p>
+
+        </div>
+
+        <button
+          className="bg-blue-600 hover:bg-blue-700 px-5 py-3 rounded-xl transition"
+        >
           + Add Book
         </button>
 
@@ -25,29 +39,12 @@ export default function BooksTable() {
 
           <tr>
 
-            <th className="text-left px-6 py-4">
-              Book
-            </th>
-
-            <th className="text-left px-6 py-4">
-              Author
-            </th>
-
-            <th className="text-left px-6 py-4">
-              Category
-            </th>
-
-            <th className="text-left px-6 py-4">
-              Year
-            </th>
-
-            <th className="text-left px-6 py-4">
-              Status
-            </th>
-
-            <th className="text-center px-6 py-4">
-              Actions
-            </th>
+            <th className="text-left p-4">Title</th>
+            <th className="text-left p-4">Author</th>
+            <th className="text-left p-4">Category</th>
+            <th className="text-left p-4">Year</th>
+            <th className="text-left p-4">Status</th>
+            <th className="text-center p-4">Actions</th>
 
           </tr>
 
@@ -62,55 +59,39 @@ export default function BooksTable() {
               className="border-b border-slate-800 hover:bg-slate-800 transition"
             >
 
-              <td className="px-6 py-5 font-semibold">
-
+              <td className="p-4 font-semibold">
                 {book.title}
-
               </td>
 
-              <td className="px-6 py-5">
-
+              <td className="p-4">
                 {book.author}
-
               </td>
 
-              <td className="px-6 py-5">
-
+              <td className="p-4">
                 {book.category}
-
               </td>
 
-              <td className="px-6 py-5">
-
+              <td className="p-4">
                 {book.publishedYear}
+              </td>
+
+              <td className="p-4">
+
+                <span
+                  className={`px-3 py-1 rounded-full text-sm ${
+                    book.status === "Available"
+                      ? "bg-green-600"
+                      : "bg-red-600"
+                  }`}
+                >
+                  {book.status}
+                </span>
 
               </td>
 
-              <td className="px-6 py-5">
+              <td className="p-4">
 
-                {book.status === "Available" ? (
-
-                  <span className="bg-green-600 px-3 py-1 rounded-full text-sm">
-
-                    Available
-
-                  </span>
-
-                ) : (
-
-                  <span className="bg-red-600 px-3 py-1 rounded-full text-sm">
-
-                    Borrowed
-
-                  </span>
-
-                )}
-
-              </td>
-
-              <td className="px-6 py-5">
-
-                <div className="flex justify-center gap-4">
+                <div className="flex justify-center gap-3">
 
                   <button className="bg-blue-600 p-2 rounded-lg hover:bg-blue-700">
 
