@@ -3,28 +3,27 @@
 Book::Book()
 {
     id = 0;
-    name = "";
+    title = "";
     author = "";
     category = "";
-    borrowed = false;
-    borrowCount = 0;
+    year = 0;
+    available = true;
 }
 
 Book::Book(
     int id,
-    string name,
-    string author,
-    string category,
-    bool borrowed,
-    int borrowCount
-)
+    std::string title,
+    std::string author,
+    std::string category,
+    int year,
+    bool available)
 {
     this->id = id;
-    this->name = name;
+    this->title = title;
     this->author = author;
     this->category = category;
-    this->borrowed = borrowed;
-    this->borrowCount = borrowCount;
+    this->year = year;
+    this->available = available;
 }
 
 int Book::getId() const
@@ -32,52 +31,52 @@ int Book::getId() const
     return id;
 }
 
-string Book::getName() const
+std::string Book::getTitle() const
 {
-    return name;
+    return title;
 }
 
-string Book::getAuthor() const
+std::string Book::getAuthor() const
 {
     return author;
 }
 
-string Book::getCategory() const
+std::string Book::getCategory() const
 {
     return category;
 }
 
-bool Book::isBorrowed() const
+int Book::getYear() const
 {
-    return borrowed;
+    return year;
 }
 
-int Book::getBorrowCount() const
+bool Book::isAvailable() const
 {
-    return borrowCount;
+    return available;
 }
 
-void Book::setName(string name)
+void Book::setTitle(std::string title)
 {
-    this->name = name;
+    this->title = title;
 }
 
-void Book::setAuthor(string author)
+void Book::setAuthor(std::string author)
 {
     this->author = author;
 }
 
-void Book::setCategory(string category)
+void Book::setCategory(std::string category)
 {
     this->category = category;
 }
 
-void Book::setBorrowed(bool status)
+void Book::setYear(int year)
 {
-    borrowed = status;
+    this->year = year;
 }
 
-void Book::increaseBorrowCount()
+void Book::setAvailability(bool status)
 {
-    borrowCount++;
+    available = status;
 }

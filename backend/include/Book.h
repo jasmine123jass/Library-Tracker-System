@@ -3,52 +3,49 @@
 
 #include <string>
 
-using namespace std;
-
 class Book
 {
 private:
     int id;
-    string name;
-    string author;
-    string category;
-    bool borrowed;
-    int borrowCount;
+    std::string title;
+    std::string author;
+    std::string category;
+    int year;
+    bool available;
 
 public:
-
     Book();
 
     Book(
         int id,
-        string name,
-        string author,
-        string category,
-        bool borrowed = false,
-        int borrowCount = 0
+        std::string title,
+        std::string author,
+        std::string category,
+        int year,
+        bool available = true
     );
 
     int getId() const;
 
-    string getName() const;
+    std::string getTitle() const;
 
-    string getAuthor() const;
+    std::string getAuthor() const;
 
-    string getCategory() const;
+    std::string getCategory() const;
 
-    bool isBorrowed() const;
+    int getYear() const;
 
-    int getBorrowCount() const;
+    bool isAvailable() const;
 
-    void setName(string name);
+    void setTitle(std::string title);
 
-    void setAuthor(string author);
+    void setAuthor(std::string author);
 
-    void setCategory(string category);
+    void setCategory(std::string category);
 
-    void setBorrowed(bool status);
+    void setYear(int year);
 
-    void increaseBorrowCount();
+    void setAvailability(bool status);
 };
 
 #endif

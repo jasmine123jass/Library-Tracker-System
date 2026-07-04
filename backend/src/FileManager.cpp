@@ -3,81 +3,78 @@
 #include <fstream>
 #include <sstream>
 
-bool FileManager::saveBooks(
-    const vector<Book>& books,
-    const string& filename
-)
+using namespace std;
+
+void FileManager::saveBooks(const vector<Book>& books)
 {
-    ofstream file(filename);
+    ofstream file("../data/books.txt");
 
-    if(!file.is_open())
-        return false;
+    if (!file.is_open())
+        return;
 
-    for(const Book &book : books)
+    for (const Book& book : books)
     {
         file
-        << book.getId() << "|"
-        << book.getName() << "|"
-        << book.getAuthor() << "|"
-        << book.getCategory() << "|"
-        << book.isBorrowed() << "|"
-        << book.getBorrowCount()
-        << endl;
+            << book.getId() << "|"
+            << book.getTitle() << "|"
+            << book.getAuthor() << "|"
+            << book.getCategory() << "|"
+            << book.getYear() << "|"
+            << book.isAvailable()
+            << endl;
     }
 
     file.close();
-
-    return true;
 }
 
-vector<Book> FileManager::loadBooks(
-    const string& filename
-)
+vector<Book> FileManager::loadBooks()
 {
     vector<Book> books;
 
-    ifstream file(filename);
+    ifstream file("../data/books.txt");
 
-    if(!file.is_open())
+    if (!file.is_open())
         return books;
 
     string line;
 
-    while(getline(file,line))
+    while (getline(file, line))
     {
         stringstream ss(line);
 
         string id;
-        string name;
+        string title;
         string author;
         string category;
-        string borrowed;
-        string borrowCount;
+        string year;
+        string available;
 
-        getline(ss,id,'|');
-        getline(ss,name,'|');
-        getline(ss,author,'|');
-        getline(ss,category,'|');
-        getline(ss,borrowed,'|');
-        getline(ss,borrowCount,'|');
+        getline(ss, id, '|');
+        getline(ss, title, '|');
+        getline(ss, author, '|');
+        getline(ss, category, '|');
+        getline(ss, year, '|');
+        getline(ss, available, '|');
 
-        Book book(
+        books.push_back(
 
-            stoi(id),
+            Book(
 
-            name,
+                stoi(id),
 
-            author,
+                title,
 
-            category,
+                author,
 
-            stoi(borrowed),
+                category,
 
-            stoi(borrowCount)
+                stoi(year),
+
+                stoi(available)
+
+            )
 
         );
-
-        books.push_back(book);
     }
 
     file.close();
