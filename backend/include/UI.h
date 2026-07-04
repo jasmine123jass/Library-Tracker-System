@@ -26,11 +26,11 @@ public:
 
     void editBookUI();
 
-    void searchMenuUI();
+    void searchBookUI();
 
     void statisticsUI();
 
-    void sortMenuUI();
+    void sortBooksUI();
 };
 
 #endif

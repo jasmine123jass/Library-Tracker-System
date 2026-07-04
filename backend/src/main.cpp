@@ -2,10 +2,6 @@
 #include "../include/UI.h"
 #include "../include/FileManager.h"
 
-#include <iostream>
-
-using namespace std;
-
 int main()
 {
     Library library;
@@ -24,8 +20,6 @@ int main()
         library.getBooks(),
         "data/books.txt"
     );
-
-    cout << "\nThank You For Using Library Management System.\n";
 
     return 0;
 }

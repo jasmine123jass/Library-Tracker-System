@@ -10,10 +10,12 @@ private:
     std::string title;
     std::string author;
     std::string category;
-    int year;
+    int publishedYear;
     bool available;
+    int borrowCount;
 
 public:
+
     Book();
 
     Book(
@@ -21,7 +23,7 @@ public:
         std::string title,
         std::string author,
         std::string category,
-        int year,
+        int publishedYear,
         bool available = true
     );
 
@@ -33,9 +35,11 @@ public:
 
     std::string getCategory() const;
 
-    int getYear() const;
+    int getPublishedYear() const;
 
     bool isAvailable() const;
+
+    int getBorrowCount() const;
 
     void setTitle(std::string title);
 
@@ -43,9 +47,11 @@ public:
 
     void setCategory(std::string category);
 
-    void setYear(int year);
+    void setPublishedYear(int year);
 
     void setAvailability(bool status);
+
+    void increaseBorrowCount();
 };
 
 #endif

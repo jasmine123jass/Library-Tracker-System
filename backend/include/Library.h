@@ -4,46 +4,46 @@
 #include <vector>
 #include "Book.h"
 
-using namespace std;
-
 class Library
 {
 private:
 
-    vector<Book> books;
+    std::vector<Book> books;
+
     int nextBookId;
 
 public:
 
     Library();
 
-    void addBook(string name, string author, string category);
-    void setBooks(vector<Book> books);
-    void displayBooks();
+    std::vector<Book>& getBooks();
 
-    void borrowBook();
+    void setBooks(std::vector<Book> books);
 
-    void returnBook();
+    void addBook(
+        std::string title,
+        std::string author,
+        std::string category,
+        int year
+    );
 
-    void deleteBook();
+    void displayBooks() const;
 
-    void editBook();
+    void deleteBook(int id);
 
-    void searchBook();
+    void editBook(int id);
 
-    void searchByAuthor();
+    void borrowBook(int id);
 
-    void searchByCategory();
+    void returnBook(int id);
 
-    void sortByName();
+    void searchBook(std::string keyword);
+
+    void sortByTitle();
 
     void sortByAuthor();
 
-    void statistics();
-
-    void mostBorrowedBook();
-
-    vector<Book>& getBooks();
+    void showStatistics();
 };
 
 #endif

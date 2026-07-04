@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <iomanip>
-#include <algorithm>
 
 using namespace std;
 
@@ -15,117 +14,75 @@ vector<Book>& Library::getBooks()
 {
     return books;
 }
-void Library::addBook(string name, string author, string category)
+
+void Library::setBooks(vector<Book> books)
+{
+    this->books = books;
+
+    if(!books.empty())
+    {
+        nextBookId = books.back().getId() + 1;
+    }
+}
+
+void Library::addBook(
+    string title,
+    string author,
+    string category,
+    int year
+)
 {
     Book book(
         nextBookId++,
-        name,
+        title,
         author,
-        category
+        category,
+        year
     );
 
     books.push_back(book);
+
+    cout << "\nBook Added Successfully.\n";
 }
-void Library::displayBooks()
+
+void Library::displayBooks() const
 {
     if(books.empty())
     {
-        cout<<"\nLibrary Empty.\n";
+        cout << "\nNo Books Available.\n";
         return;
     }
 
-    cout<<left;
+    cout << left;
 
-    cout<<setw(8)<<"ID"
-        <<setw(30)<<"Book"
-        <<setw(25)<<"Author"
-        <<setw(20)<<"Category"
-        <<setw(15)<<"Status"
-        <<endl;
+    cout << setw(8) << "ID"
+         << setw(30) << "Title"
+         << setw(25) << "Author"
+         << setw(20) << "Category"
+         << setw(10) << "Year"
+         << setw(15) << "Status"
+         << endl;
 
-    cout<<string(95,'-')<<endl;
+    cout << string(110,'-') << endl;
 
-    for(Book &b:books)
+    for(const Book &book : books)
     {
-        cout<<setw(8)<<b.getId()
-            <<setw(30)<<b.getName()
-            <<setw(25)<<b.getAuthor()
-            <<setw(20)<<b.getCategory();
+        cout << setw(8) << book.getId()
+             << setw(30) << book.getTitle()
+             << setw(25) << book.getAuthor()
+             << setw(20) << book.getCategory()
+             << setw(10) << book.getPublishedYear();
 
-        if(b.isBorrowed())
-            cout<<"Borrowed";
+        if(book.isAvailable())
+            cout << "Available";
         else
-            cout<<"Available";
+            cout << "Borrowed";
 
-        cout<<endl;
+        cout << endl;
     }
 }
-
-void Library::borrowBook()
+void Library::deleteBook(int id)
 {
-    int id;
-
-    cout<<"Enter Book ID : ";
-    cin>>id;
-
-    for(Book &b:books)
-    {
-        if(b.getId()==id)
-        {
-            if(b.isBorrowed())
-            {
-                cout<<"Already Borrowed.\n";
-                return;
-            }
-
-            b.setBorrowed(true);
-
-            b.increaseBorrowCount();
-
-            cout<<"Book Borrowed Successfully.\n";
-
-            return;
-        }
-    }
-
-    cout<<"Book Not Found.\n";
-}
-
-void Library::returnBook()
-{
-    int id;
-
-    cout<<"Enter Book ID : ";
-
-    cin>>id;
-
-    for(Book &b:books)
-    {
-        if(b.getId()==id)
-        {
-            if(!b.isBorrowed())
-            {
-                cout<<"Book Already Available.\n";
-                return;
-            }
-
-            b.setBorrowed(false);
-
-            cout<<"Book Returned Successfully.\n";
-
-            return;
-        }
-    }
-
-    cout<<"Book Not Found.\n";
-}
-void Library::deleteBook()
-{
-    int id;
-
-    cout << "Enter Book ID : ";
-    cin >> id;
-
     for(auto it = books.begin(); it != books.end(); it++)
     {
         if(it->getId() == id)
@@ -140,35 +97,36 @@ void Library::deleteBook()
 
     cout << "\nBook Not Found.\n";
 }
-void Library::editBook()
+
+void Library::editBook(int id)
 {
-    int id;
-
-    cout << "Enter Book ID : ";
-    cin >> id;
-
-    cin.ignore();
-
-    for(Book &b : books)
+    for(Book &book : books)
     {
-        if(b.getId() == id)
+        if(book.getId() == id)
         {
-            string name;
+            string title;
             string author;
             string category;
+            int year;
 
-            cout << "New Book Name : ";
-            getline(cin,name);
+            cin.ignore();
+
+            cout << "New Title : ";
+            getline(cin, title);
 
             cout << "New Author : ";
-            getline(cin,author);
+            getline(cin, author);
 
             cout << "New Category : ";
-            getline(cin,category);
+            getline(cin, category);
 
-            b.setName(name);
-            b.setAuthor(author);
-            b.setCategory(category);
+            cout << "Published Year : ";
+            cin >> year;
+
+            book.setTitle(title);
+            book.setAuthor(author);
+            book.setCategory(category);
+            book.setPublishedYear(year);
 
             cout << "\nBook Updated Successfully.\n";
 
@@ -178,192 +136,172 @@ void Library::editBook()
 
     cout << "\nBook Not Found.\n";
 }
-void Library::searchBook()
+
+void Library::borrowBook(int id)
 {
-    cin.ignore();
+    for(Book &book : books)
+    {
+        if(book.getId() == id)
+        {
+            if(!book.isAvailable())
+            {
+                cout << "\nBook Already Borrowed.\n";
+                return;
+            }
 
-    string keyword;
+            book.setAvailability(false);
 
-    cout << "Enter Book Name : ";
+            book.increaseBorrowCount();
 
-    getline(cin,keyword);
+            cout << "\nBook Borrowed Successfully.\n";
+
+            return;
+        }
+    }
+
+    cout << "\nBook Not Found.\n";
+}
+
+void Library::returnBook(int id)
+{
+    for(Book &book : books)
+    {
+        if(book.getId() == id)
+        {
+            if(book.isAvailable())
+            {
+                cout << "\nBook Already Available.\n";
+                return;
+            }
+
+            book.setAvailability(true);
+
+            cout << "\nBook Returned Successfully.\n";
+
+            return;
+        }
+    }
+
+    cout << "\nBook Not Found.\n";
+}
+#include <algorithm>
+
+void Library::searchBook(std::string keyword)
+{
+    transform(
+        keyword.begin(),
+        keyword.end(),
+        keyword.begin(),
+        ::tolower
+    );
 
     bool found = false;
 
-    transform(keyword.begin(),keyword.end(),keyword.begin(),::tolower);
-
-    for(Book &b : books)
+    for(const Book &book : books)
     {
-        string temp = b.getName();
+        string title = book.getTitle();
 
-        transform(temp.begin(),temp.end(),temp.begin(),::tolower);
+        transform(
+            title.begin(),
+            title.end(),
+            title.begin(),
+            ::tolower
+        );
 
-        if(temp.find(keyword)!=string::npos)
+        if(title.find(keyword) != string::npos)
         {
             found = true;
 
-            cout << "\nID : " << b.getId() << endl;
-            cout << "Book : " << b.getName() << endl;
-            cout << "Author : " << b.getAuthor() << endl;
-            cout << "Category : " << b.getCategory() << endl;
-            cout << "Status : ";
+            cout << "\n-----------------------------------------\n";
+            cout << "ID       : " << book.getId() << endl;
+            cout << "Title    : " << book.getTitle() << endl;
+            cout << "Author   : " << book.getAuthor() << endl;
+            cout << "Category : " << book.getCategory() << endl;
+            cout << "Year     : " << book.getPublishedYear() << endl;
+            cout << "Status   : ";
 
-            if(b.isBorrowed())
-                cout << "Borrowed\n";
+            if(book.isAvailable())
+                cout << "Available";
             else
-                cout << "Available\n";
+                cout << "Borrowed";
 
-            cout << "--------------------------\n";
+            cout << endl;
         }
     }
 
     if(!found)
+    {
         cout << "\nNo Book Found.\n";
-}
-void Library::searchByAuthor()
-{
-    cin.ignore();
-
-    string author;
-
-    cout << "Enter Author Name : ";
-
-    getline(cin,author);
-
-    transform(author.begin(),author.end(),author.begin(),::tolower);
-
-    bool found = false;
-
-    for(Book &b : books)
-    {
-        string temp = b.getAuthor();
-
-        transform(temp.begin(),temp.end(),temp.begin(),::tolower);
-
-        if(temp.find(author)!=string::npos)
-        {
-            found = true;
-
-            cout << b.getId()
-                 << " | "
-                 << b.getName()
-                 << " | "
-                 << b.getAuthor()
-                 << endl;
-        }
     }
-
-    if(!found)
-        cout << "\nNo Books Found.\n";
 }
-void Library::searchByCategory()
-{
-    cin.ignore();
 
-    string category;
-
-    cout << "Enter Category : ";
-
-    getline(cin,category);
-
-    transform(category.begin(),category.end(),category.begin(),::tolower);
-
-    bool found = false;
-
-    for(Book &b : books)
-    {
-        string temp = b.getCategory();
-
-        transform(temp.begin(),temp.end(),temp.begin(),::tolower);
-
-        if(temp.find(category)!=string::npos)
-        {
-            found = true;
-
-            cout << b.getId()
-                 << " | "
-                 << b.getName()
-                 << " | "
-                 << b.getAuthor()
-                 << endl;
-        }
-    }
-
-    if(!found)
-        cout << "\nNo Books Found.\n";
-}
-void Library::sortByName()
+void Library::sortByTitle()
 {
     sort(
         books.begin(),
         books.end(),
-        [](Book a,Book b)
+        [](const Book &a,const Book &b)
         {
-            return a.getName()<b.getName();
-        });
+            return a.getTitle() < b.getTitle();
+        }
+    );
 
-    cout << "\nBooks Sorted By Name.\n";
+    cout << "\nBooks Sorted By Title.\n";
 }
+
 void Library::sortByAuthor()
 {
     sort(
         books.begin(),
         books.end(),
-        [](Book a,Book b)
+        [](const Book &a,const Book &b)
         {
-            return a.getAuthor()<b.getAuthor();
-        });
+            return a.getAuthor() < b.getAuthor();
+        }
+    );
 
     cout << "\nBooks Sorted By Author.\n";
 }
-void Library::statistics()
+
+void Library::showStatistics()
 {
+    int available = 0;
     int borrowed = 0;
 
-    for(Book &b : books)
+    for(const Book &book : books)
     {
-        if(b.isBorrowed())
+        if(book.isAvailable())
+            available++;
+        else
             borrowed++;
     }
 
-    cout << "\n==============================\n";
-    cout << "Library Statistics\n";
-    cout << "==============================\n";
+    cout << "\n=================================\n";
+    cout << "      Library Statistics\n";
+    cout << "=================================\n";
 
     cout << "Total Books      : " << books.size() << endl;
+    cout << "Available Books  : " << available << endl;
     cout << "Borrowed Books   : " << borrowed << endl;
-    cout << "Available Books  : " << books.size()-borrowed << endl;
-}
-void Library::mostBorrowedBook()
-{
-    if(books.empty())
-    {
-        cout << "No Books Available.\n";
-        return;
-    }
-
-    Book *best = &books[0];
-
-    for(Book &b : books)
-    {
-        if(b.getBorrowCount()>best->getBorrowCount())
-            best=&b;
-    }
-
-    cout << "\nMost Borrowed Book\n";
-
-    cout << "-------------------------\n";
-
-    cout << "Book : " << best->getName() << endl;
-    cout << "Author : " << best->getAuthor() << endl;
-    cout << "Borrow Count : " << best->getBorrowCount() << endl;
-}
-void Library::setBooks(vector<Book> books)
-{
-    this->books = books;
 
     if(!books.empty())
     {
-        nextBookId = books.back().getId() + 1;
+        Book best = books[0];
+
+        for(const Book &book : books)
+        {
+            if(book.getBorrowCount() > best.getBorrowCount())
+            {
+                best = book;
+            }
+        }
+
+        cout << "\nMost Borrowed Book\n";
+        cout << "-------------------------\n";
+        cout << "Title        : " << best.getTitle() << endl;
+        cout << "Author       : " << best.getAuthor() << endl;
+        cout << "Borrow Count : " << best.getBorrowCount() << endl;
     }
+
+    cout << "=================================\n";
 }

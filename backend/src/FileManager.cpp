@@ -5,40 +5,47 @@
 
 using namespace std;
 
-void FileManager::saveBooks(const vector<Book>& books)
+bool FileManager::saveBooks(
+    const vector<Book>& books,
+    const string& filename
+)
 {
-    ofstream file("../data/books.txt");
+    ofstream file(filename);
 
-    if (!file.is_open())
-        return;
+    if(!file.is_open())
+        return false;
 
-    for (const Book& book : books)
+    for(const Book &book : books)
     {
         file
-            << book.getId() << "|"
-            << book.getTitle() << "|"
-            << book.getAuthor() << "|"
-            << book.getCategory() << "|"
-            << book.getYear() << "|"
-            << book.isAvailable()
+            << book.getId() << ","
+            << book.getTitle() << ","
+            << book.getAuthor() << ","
+            << book.getCategory() << ","
+            << book.getPublishedYear() << ","
+            << book.isAvailable() << ","
+            << book.getBorrowCount()
             << endl;
     }
 
     file.close();
-}
 
-vector<Book> FileManager::loadBooks()
+    return true;
+}
+vector<Book> FileManager::loadBooks(
+    const string& filename
+)
 {
     vector<Book> books;
 
-    ifstream file("../data/books.txt");
+    ifstream file(filename);
 
-    if (!file.is_open())
+    if(!file.is_open())
         return books;
 
     string line;
 
-    while (getline(file, line))
+    while(getline(file,line))
     {
         stringstream ss(line);
 
@@ -48,33 +55,31 @@ vector<Book> FileManager::loadBooks()
         string category;
         string year;
         string available;
+        string borrowCount;
 
-        getline(ss, id, '|');
-        getline(ss, title, '|');
-        getline(ss, author, '|');
-        getline(ss, category, '|');
-        getline(ss, year, '|');
-        getline(ss, available, '|');
+        getline(ss,id,',');
+        getline(ss,title,',');
+        getline(ss,author,',');
+        getline(ss,category,',');
+        getline(ss,year,',');
+        getline(ss,available,',');
+        getline(ss,borrowCount,',');
 
-        books.push_back(
-
-            Book(
-
-                stoi(id),
-
-                title,
-
-                author,
-
-                category,
-
-                stoi(year),
-
-                stoi(available)
-
-            )
-
+        Book book(
+            stoi(id),
+            title,
+            author,
+            category,
+            stoi(year),
+            available == "1"
         );
+
+        for(int i = 0; i < stoi(borrowCount); i++)
+        {
+            book.increaseBorrowCount();
+        }
+
+        books.push_back(book);
     }
 
     file.close();

@@ -6,251 +6,261 @@
 
 using namespace std;
 
+void pauseScreen()
+{
+    cout << "\nPress Enter to continue...";
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    cin.get();
+}
+
 UI::UI(Library &library)
     : library(library)
 {
-
 }
 
 void UI::showMainMenu()
 {
     int choice;
 
-    while(true)
+    while (true)
     {
         system("cls");
 
-        cout<<"=====================================================\n";
-        cout<<"          LIBRARY MANAGEMENT SYSTEM\n";
-        cout<<"=====================================================\n\n";
+        cout << "====================================\n";
+        cout << "     LIBRARY MANAGEMENT SYSTEM\n";
+        cout << "====================================\n\n";
 
-        cout<<"1. Add Book\n";
-        cout<<"2. Display Books\n";
-        cout<<"3. Borrow Book\n";
-        cout<<"4. Return Book\n";
-        cout<<"5. Edit Book\n";
-        cout<<"6. Delete Book\n";
-        cout<<"7. Search Books\n";
-        cout<<"8. Statistics\n";
-        cout<<"9. Sort Books\n";
-        cout<<"10. Save Books\n";
-        cout<<"11. Exit\n\n";
+        cout << "1. Add Book\n";
+        cout << "2. Display Books\n";
+        cout << "3. Borrow Book\n";
+        cout << "4. Return Book\n";
+        cout << "5. Edit Book\n";
+        cout << "6. Delete Book\n";
+        cout << "7. Search Book\n";
+        cout << "8. Statistics\n";
+        cout << "9. Sort Books\n";
+        cout << "10. Save Books\n";
+        cout << "11. Exit\n\n";
 
-        cout<<"Enter Choice : ";
+        cout << "Enter Choice : ";
 
-        cin>>choice;
+        cin >> choice;
 
         if(cin.fail())
         {
             cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(),'\n');
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+            cout << "\nInvalid Input!\n";
+
+            pauseScreen();
+
             continue;
         }
 
         switch(choice)
         {
+            case 1:
+                addBookUI();
+                break;
 
-        case 1:
-            addBookUI();
-            break;
+            case 2:
+                displayBooksUI();
+                break;
 
-        case 2:
-            displayBooksUI();
-            break;
+            case 3:
+                borrowBookUI();
+                break;
 
-        case 3:
-            borrowBookUI();
-            break;
+            case 4:
+                returnBookUI();
+                break;
 
-        case 4:
-            returnBookUI();
-            break;
+            case 5:
+                editBookUI();
+                break;
 
-        case 5:
-            editBookUI();
-            break;
+            case 6:
+                deleteBookUI();
+                break;
 
-        case 6:
-            deleteBookUI();
-            break;
+            case 7:
+                searchBookUI();
+                break;
 
-        case 7:
-            searchMenuUI();
-            break;
+            case 8:
+                statisticsUI();
+                break;
 
-        case 8:
-            statisticsUI();
-            break;
+            case 9:
+                sortBooksUI();
+                break;
 
-        case 9:
-            sortMenuUI();
-            break;
+            case 10:
 
-        case 10:
+                if(FileManager::saveBooks(
+                    library.getBooks(),
+                    "data/books.txt"
+                ))
+                    cout << "\nBooks Saved Successfully.\n";
+                else
+                    cout << "\nUnable To Save Books.\n";
 
-            if(FileManager::saveBooks(
-                library.getBooks(),
-                "data/books.txt"
-            ))
-                cout<<"\nBooks Saved Successfully.\n";
-            else
-                cout<<"\nUnable To Save.\n";
+                pauseScreen();
 
-            system("pause");
+                break;
 
-            break;
+            case 11:
 
-        case 11:
+                FileManager::saveBooks(
+                    library.getBooks(),
+                    "data/books.txt"
+                );
 
-            FileManager::saveBooks(
-                library.getBooks(),
-                "data/books.txt"
-            );
+                cout << "\nThank You!\n";
 
-            return;
+                return;
 
-        default:
+            default:
 
-            cout<<"\nInvalid Choice.\n";
+                cout << "\nInvalid Choice!\n";
 
-            system("pause");
-
+                pauseScreen();
         }
-
     }
-
 }
 
 void UI::addBookUI()
 {
-    string name;
+    string title;
     string author;
     string category;
+    int year;
 
-    cin.ignore();
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    cout<<"\nBook Name : ";
-    getline(cin,name);
+    cout << "\nBook Title : ";
+    getline(cin,title);
 
-    cout<<"Author : ";
+    cout << "Author : ";
     getline(cin,author);
 
-    cout<<"Category : ";
+    cout << "Category : ";
     getline(cin,category);
 
+    cout << "Published Year : ";
+    cin >> year;
+
     library.addBook(
-        name,
+        title,
         author,
-        category
+        category,
+        year
     );
 
-    cout<<"\nBook Added Successfully.\n";
-
-    system("pause");
+    pauseScreen();
 }
 
 void UI::displayBooksUI()
 {
     library.displayBooks();
 
-    system("pause");
+    pauseScreen();
 }
 
 void UI::borrowBookUI()
 {
-    library.borrowBook();
+    int id;
 
-    system("pause");
+    cout << "\nEnter Book ID : ";
+    cin >> id;
+
+    library.borrowBook(id);
+
+    pauseScreen();
 }
 
 void UI::returnBookUI()
 {
-    library.returnBook();
+    int id;
 
-    system("pause");
+    cout << "\nEnter Book ID : ";
+    cin >> id;
+
+    library.returnBook(id);
+
+    pauseScreen();
 }
 
 void UI::deleteBookUI()
 {
-    library.deleteBook();
+    int id;
 
-    system("pause");
+    cout << "\nEnter Book ID : ";
+    cin >> id;
+
+    library.deleteBook(id);
+
+    pauseScreen();
 }
 
 void UI::editBookUI()
 {
-    library.editBook();
+    int id;
 
-    system("pause");
+    cout << "\nEnter Book ID : ";
+    cin >> id;
+
+    library.editBook(id);
+
+    pauseScreen();
+}
+
+void UI::searchBookUI()
+{
+    string keyword;
+
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+    cout << "\nEnter Book Title : ";
+
+    getline(cin,keyword);
+
+    library.searchBook(keyword);
+
+    pauseScreen();
 }
 
 void UI::statisticsUI()
 {
-    library.statistics();
+    library.showStatistics();
 
-    library.mostBorrowedBook();
-
-    system("pause");
+    pauseScreen();
 }
 
-void UI::sortMenuUI()
+void UI::sortBooksUI()
 {
     int choice;
 
-    cout<<"\n";
+    cout << "\n1. Sort By Title\n";
+    cout << "2. Sort By Author\n";
 
-    cout<<"1. Sort By Name\n";
-    cout<<"2. Sort By Author\n";
+    cout << "\nChoice : ";
 
-    cout<<"\nChoice : ";
+    cin >> choice;
 
-    cin>>choice;
-
-    if(choice==1)
-        library.sortByName();
-
-    else if(choice==2)
-        library.sortByAuthor();
-
-    system("pause");
-}
-
-void UI::searchMenuUI()
-{
-    int choice;
-
-    cout<<"\n";
-
-    cout<<"1. Search By Book Name\n";
-    cout<<"2. Search By Author\n";
-    cout<<"3. Search By Category\n";
-
-    cout<<"\nChoice : ";
-
-    cin>>choice;
-
-    switch(choice)
+    if(choice == 1)
     {
-
-    case 1:
-
-        library.searchBook();
-
-        break;
-
-    case 2:
-
-        library.searchByAuthor();
-
-        break;
-
-    case 3:
-
-        library.searchByCategory();
-
-        break;
-
+        library.sortByTitle();
+    }
+    else if(choice == 2)
+    {
+        library.sortByAuthor();
+    }
+    else
+    {
+        cout << "\nInvalid Choice.\n";
     }
 
-    system("pause");
+    pauseScreen();
 }
