@@ -15,10 +15,45 @@ import { Book } from "@/types/book";
 export default function Home() {
 
   const [books, setBooks] = useState<Book[]>(initialBooks);
+
   const [search, setSearch] = useState("");
 
-  const addBook = (book: Book) => {
-    setBooks([...books, book]);
+  const [editBook, setEditBook] = useState<Book | null>(null);
+
+  const saveBook = (book: Book) => {
+
+    const exists = books.some((b) => b.id === book.id);
+
+    if (exists) {
+
+      setBooks(
+        books.map((b) =>
+          b.id === book.id ? book : b
+        )
+      );
+
+    } else {
+
+      setBooks([...books, book]);
+
+    }
+
+    setEditBook(null);
+
+  };
+
+  const deleteBook = (id: number) => {
+
+    setBooks(
+      books.filter((book) => book.id !== id)
+    );
+
+  };
+
+  const handleEdit = (book: Book) => {
+
+    setEditBook(book);
+
   };
 
   const filteredBooks = useMemo(() => {
@@ -28,9 +63,13 @@ export default function Home() {
       const keyword = search.toLowerCase();
 
       return (
+
         book.title.toLowerCase().includes(keyword) ||
+
         book.author.toLowerCase().includes(keyword) ||
+
         book.category.toLowerCase().includes(keyword)
+
       );
 
     });
@@ -71,7 +110,8 @@ export default function Home() {
               />
 
               <AddBookModal
-                onAdd={addBook}
+                onSave={saveBook}
+                editBook={editBook}
               />
 
             </div>
@@ -80,7 +120,11 @@ export default function Home() {
 
           <DashboardCards books={books} />
 
-          <BooksTable books={filteredBooks} />
+          <BooksTable
+            books={filteredBooks}
+            onDelete={deleteBook}
+            onEdit={handleEdit}
+          />
 
         </div>
 
