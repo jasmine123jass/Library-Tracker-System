@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Sidebar from "@/components/Sidebar";
 import Navbar from "@/components/Navbar";
@@ -14,11 +14,36 @@ import { Book } from "@/types/book";
 
 export default function Home() {
 
-  const [books, setBooks] = useState<Book[]>(initialBooks);
+  const [books, setBooks] = useState<Book[]>(() => {
+
+    if (typeof window !== "undefined") {
+
+      const savedBooks = localStorage.getItem("books");
+
+      if (savedBooks) {
+
+        return JSON.parse(savedBooks);
+
+      }
+
+    }
+
+    return initialBooks;
+
+  });
 
   const [search, setSearch] = useState("");
 
   const [editBook, setEditBook] = useState<Book | null>(null);
+
+  useEffect(() => {
+
+    localStorage.setItem(
+      "books",
+      JSON.stringify(books)
+    );
+
+  }, [books]);
 
   const saveBook = (book: Book) => {
 
@@ -27,9 +52,13 @@ export default function Home() {
     if (exists) {
 
       setBooks(
+
         books.map((b) =>
+
           b.id === book.id ? book : b
+
         )
+
       );
 
     } else {
@@ -45,7 +74,9 @@ export default function Home() {
   const deleteBook = (id: number) => {
 
     setBooks(
+
       books.filter((book) => book.id !== id)
+
     );
 
   };

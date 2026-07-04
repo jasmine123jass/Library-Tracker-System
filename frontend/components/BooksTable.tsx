@@ -14,7 +14,8 @@ export default function BooksTable({
   onEdit,
 }: Props) {
   return (
-    <div className="mt-8 overflow-hidden rounded-xl border border-slate-800">
+    <div className="mt-8 overflow-hidden rounded-xl border border-slate-800 bg-slate-950">
+
       <table className="w-full">
 
         <thead className="bg-slate-900">
@@ -29,55 +30,105 @@ export default function BooksTable({
         </thead>
 
         <tbody>
-          {books.map((book) => (
-            <tr
-              key={book.id}
-              className="border-t border-slate-800 hover:bg-slate-900"
-            >
-              <td className="p-4">{book.title}</td>
 
-              <td className="p-4">{book.author}</td>
+          {books.length === 0 ? (
 
-              <td className="p-4">{book.category}</td>
+            <tr>
 
-              <td className="p-4">{book.publishedYear}</td>
+              <td
+                colSpan={6}
+                className="text-center py-12 text-slate-400"
+              >
 
-              <td className="p-4">
-                <span
-                  className={`px-3 py-1 rounded-full text-sm ${
-                    book.status === "Available"
-                      ? "bg-green-600"
-                      : "bg-red-600"
-                  }`}
-                >
-                  {book.status}
-                </span>
+                <div className="flex flex-col items-center gap-2">
+
+                  <span className="text-5xl">📚</span>
+
+                  <p className="text-lg font-semibold">
+                    No Books Found
+                  </p>
+
+                  <p className="text-sm">
+                    Click <strong>+ Add Book</strong> to add your first book.
+                  </p>
+
+                </div>
+
               </td>
 
-              <td className="p-4 text-center">
-                <button
-                  onClick={() => onEdit(book)}
-                  className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded mr-2"
-                >
-                  Edit
-                </button>
-
-                <button
-                  onClick={() => {
-                    if (confirm("Delete this book?")) {
-                      onDelete(book.id);
-                    }
-                  }}
-                  className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded"
-                >
-                  Delete
-                </button>
-              </td>
             </tr>
-          ))}
+
+          ) : (
+
+            books.map((book) => (
+
+              <tr
+                key={book.id}
+                className="border-t border-slate-800 hover:bg-slate-900 transition-colors"
+              >
+
+                <td className="p-4 font-medium">
+                  {book.title}
+                </td>
+
+                <td className="p-4">
+                  {book.author}
+                </td>
+
+                <td className="p-4">
+                  {book.category}
+                </td>
+
+                <td className="p-4">
+                  {book.publishedYear}
+                </td>
+
+                <td className="p-4">
+
+                  <span
+                    className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      book.status === "Available"
+                        ? "bg-green-600 text-white"
+                        : "bg-red-600 text-white"
+                    }`}
+                  >
+                    {book.status}
+                  </span>
+
+                </td>
+
+                <td className="p-4 text-center">
+
+                  <button
+                    onClick={() => onEdit(book)}
+                    className="bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded mr-2 transition"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      if (confirm("Delete this book?")) {
+                        onDelete(book.id);
+                      }
+                    }}
+                    className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded transition"
+                  >
+                    Delete
+                  </button>
+
+                </td>
+
+              </tr>
+
+            ))
+
+          )}
+
         </tbody>
 
       </table>
+
     </div>
   );
 }
