@@ -218,15 +218,53 @@ void UI::editBookUI()
 
 void UI::searchBookUI()
 {
-    string keyword;
+    int choice;
+
+    cout << "\nSearch By\n";
+    cout << "1. Title\n";
+    cout << "2. Author\n";
+    cout << "3. Category\n";
+
+    cout << "\nChoice : ";
+    cin >> choice;
 
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-    cout << "\nEnter Book Title : ";
+    string keyword;
 
-    getline(cin,keyword);
+    switch(choice)
+    {
+        case 1:
 
-    library.searchBook(keyword);
+            cout << "\nEnter Book Title : ";
+            getline(cin, keyword);
+
+            library.searchBook(keyword);
+
+            break;
+
+        case 2:
+
+            cout << "\nEnter Author Name : ";
+            getline(cin, keyword);
+
+            library.searchByAuthor(keyword);
+
+            break;
+
+        case 3:
+
+            cout << "\nEnter Category : ";
+            getline(cin, keyword);
+
+            library.searchByCategory(keyword);
+
+            break;
+
+        default:
+
+            cout << "\nInvalid Choice.\n";
+    }
 
     pauseScreen();
 }

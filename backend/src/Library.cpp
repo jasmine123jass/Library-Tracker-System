@@ -305,3 +305,47 @@ void Library::showStatistics()
 
     cout << "=================================\n";
 }
+void Library::searchByAuthor(std::string author)
+{
+    bool found = false;
+
+    for(const Book &book : books)
+    {
+        if(book.getAuthor().find(author) != std::string::npos)
+        {
+            found = true;
+
+            std::cout << "\nID : " << book.getId() << std::endl;
+            std::cout << "Title : " << book.getTitle() << std::endl;
+            std::cout << "Author : " << book.getAuthor() << std::endl;
+            std::cout << "Category : " << book.getCategory() << std::endl;
+            std::cout << "Year : " << book.getPublishedYear() << std::endl;
+            std::cout << "--------------------------\n";
+        }
+    }
+
+    if(!found)
+        std::cout << "\nNo Books Found.\n";
+}
+void Library::searchByCategory(std::string category)
+{
+    bool found = false;
+
+    for(const Book &book : books)
+    {
+        if(book.getCategory().find(category) != std::string::npos)
+        {
+            found = true;
+
+            std::cout << "\nID : " << book.getId() << std::endl;
+            std::cout << "Title : " << book.getTitle() << std::endl;
+            std::cout << "Author : " << book.getAuthor() << std::endl;
+            std::cout << "Category : " << book.getCategory() << std::endl;
+            std::cout << "Year : " << book.getPublishedYear() << std::endl;
+            std::cout << "--------------------------\n";
+        }
+    }
+
+    if(!found)
+        std::cout << "\nNo Books Found.\n";
+}
