@@ -17,12 +17,39 @@ UI::UI(Library &library)
     : library(library)
 {
 }
+bool UI::adminLogin()
+{
+    string username;
+    string password;
 
+    cout << "\n========== ADMIN LOGIN ==========\n";
+
+    cout << "Username : ";
+    cin >> username;
+
+    cout << "Password : ";
+    cin >> password;
+
+    if(username=="admin" && password=="admin123")
+    {
+        cout<<"\nLogin Successful!\n";
+
+        pauseScreen();
+
+        return true;
+    }
+
+    cout<<"\nInvalid Username or Password!\n";
+
+    pauseScreen();
+
+    return false;
+}
 void UI::showMainMenu()
 {
     int choice;
 
-    while (true)
+    while(true)
     {
         system("cls");
 
@@ -30,20 +57,11 @@ void UI::showMainMenu()
         cout << "     LIBRARY MANAGEMENT SYSTEM\n";
         cout << "====================================\n\n";
 
-        cout << "1. Add Book\n";
-        cout << "2. Display Books\n";
-        cout << "3. Borrow Book\n";
-        cout << "4. Return Book\n";
-        cout << "5. Edit Book\n";
-        cout << "6. Delete Book\n";
-        cout << "7. Search Book\n";
-        cout << "8. Statistics\n";
-        cout << "9. Sort Books\n";
-        cout << "10. Save Books\n";
-        cout << "11. Exit\n\n";
+        cout << "1. Admin Login\n";
+        cout << "2. User Menu\n";
+        cout << "3. Exit\n\n";
 
         cout << "Enter Choice : ";
-
         cin >> choice;
 
         if(cin.fail())
@@ -60,76 +78,152 @@ void UI::showMainMenu()
 
         switch(choice)
         {
-            case 1:
-                addBookUI();
-                break;
 
-            case 2:
-                displayBooksUI();
-                break;
+        case 1:
 
-            case 3:
-                borrowBookUI();
-                break;
+            if(adminLogin())
+            {
+                bool adminMenu = true;
 
-            case 4:
-                returnBookUI();
-                break;
+                while(adminMenu)
+                {
+                    system("cls");
 
-            case 5:
-                editBookUI();
-                break;
+                    int adminChoice;
 
-            case 6:
-                deleteBookUI();
-                break;
+                    cout << "========== ADMIN MENU ==========\n\n";
 
-            case 7:
-                searchBookUI();
-                break;
+                    cout << "1. Add Book\n";
+                    cout << "2. Edit Book\n";
+                    cout << "3. Delete Book\n";
+                    cout << "4. Statistics\n";
+                    cout << "5. Save Books\n";
+                    cout << "6. Back\n\n";
 
-            case 8:
-                statisticsUI();
-                break;
+                    cout << "Choice : ";
+                    cin >> adminChoice;
 
-            case 9:
-                sortBooksUI();
-                break;
+                    switch(adminChoice)
+                    {
+                    case 1:
+                        addBookUI();
+                        break;
 
-            case 10:
+                    case 2:
+                        editBookUI();
+                        break;
 
-                if(FileManager::saveBooks(
-                    library.getBooks(),
-                    "data/books.txt"
-                ))
-                    cout << "\nBooks Saved Successfully.\n";
-                else
-                    cout << "\nUnable To Save Books.\n";
+                    case 3:
+                        deleteBookUI();
+                        break;
 
-                pauseScreen();
+                    case 4:
+                        statisticsUI();
+                        break;
 
-                break;
+                    case 5:
 
-            case 11:
+                        if(FileManager::saveBooks(
+                            library.getBooks(),
+                            "data/books.txt"
+                        ))
+                            cout << "\nBooks Saved Successfully.\n";
+                        else
+                            cout << "\nUnable To Save Books.\n";
 
-                FileManager::saveBooks(
-                    library.getBooks(),
-                    "data/books.txt"
-                );
+                        pauseScreen();
 
-                cout << "\nThank You!\n";
+                        break;
 
-                return;
+                    case 6:
+                        adminMenu = false;
+                        break;
 
-            default:
+                    default:
+                        cout << "\nInvalid Choice!\n";
+                        pauseScreen();
+                    }
+                }
+            }
 
-                cout << "\nInvalid Choice!\n";
+            break;
 
-                pauseScreen();
+        case 2:
+        {
+            bool userMenu = true;
+
+            while(userMenu)
+            {
+                system("cls");
+
+                int userChoice;
+
+                cout << "========== USER MENU ==========\n\n";
+
+                cout << "1. Display Books\n";
+                cout << "2. Borrow Book\n";
+                cout << "3. Return Book\n";
+                cout << "4. Search Book\n";
+                cout << "5. Sort Books\n";
+                cout << "6. Back\n\n";
+
+                cout << "Choice : ";
+                cin >> userChoice;
+
+                switch(userChoice)
+                {
+                case 1:
+                    displayBooksUI();
+                    break;
+
+                case 2:
+                    borrowBookUI();
+                    break;
+
+                case 3:
+                    returnBookUI();
+                    break;
+
+                case 4:
+                    searchBookUI();
+                    break;
+
+                case 5:
+                    sortBooksUI();
+                    break;
+
+                case 6:
+                    userMenu = false;
+                    break;
+
+                default:
+                    cout << "\nInvalid Choice!\n";
+                    pauseScreen();
+                }
+            }
+
+            break;
+        }
+
+        case 3:
+
+            FileManager::saveBooks(
+                library.getBooks(),
+                "data/books.txt"
+            );
+
+            cout << "\nThank You!\n";
+
+            return;
+
+        default:
+
+            cout << "\nInvalid Choice!\n";
+
+            pauseScreen();
         }
     }
 }
-
 void UI::addBookUI()
 {
     string title;

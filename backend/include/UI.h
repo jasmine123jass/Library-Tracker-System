@@ -14,6 +14,8 @@ public:
 
     void showMainMenu();
 
+    bool adminLogin();
+
     void addBookUI();
 
     void displayBooksUI();
