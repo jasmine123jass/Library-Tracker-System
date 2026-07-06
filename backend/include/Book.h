@@ -10,6 +10,8 @@ private:
     std::string title;
     std::string author;
     std::string category;
+    std::string issueDate;
+    std::string returnDate;
     int publishedYear;
     bool available;
     int borrowCount;
@@ -34,6 +36,14 @@ public:
     std::string getAuthor() const;
 
     std::string getCategory() const;
+
+    std::string getIssueDate() const;
+
+    std::string getReturnDate() const;
+
+    void setIssueDate(std::string date);
+
+    void setReturnDate(std::string date);
 
     int getPublishedYear() const;
 

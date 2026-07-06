@@ -55,31 +55,35 @@ void Library::displayBooks() const
 
     cout << left;
 
-    cout << setw(8) << "ID"
-         << setw(30) << "Title"
-         << setw(25) << "Author"
-         << setw(20) << "Category"
-         << setw(10) << "Year"
-         << setw(15) << "Status"
-         << endl;
+    cout << setw(8)  << "ID"
+        << setw(30) << "Title"
+        << setw(25) << "Author"
+        << setw(20) << "Category"
+        << setw(10) << "Year"
+        << setw(15) << "Issue"
+        << setw(15) << "Return"
+        << setw(15) << "Status"
+        << endl;
 
     cout << string(110,'-') << endl;
 
-    for(const Book &book : books)
-    {
-        cout << setw(8) << book.getId()
-             << setw(30) << book.getTitle()
-             << setw(25) << book.getAuthor()
-             << setw(20) << book.getCategory()
-             << setw(10) << book.getPublishedYear();
+for( const Book &book : books)
+{
+    cout << setw(8)  << book.getId()
+         << setw(30) << book.getTitle()
+         << setw(25) << book.getAuthor()
+         << setw(20) << book.getCategory()
+         << setw(10) << book.getPublishedYear()
+         << setw(15) << book.getIssueDate()
+         << setw(15) << book.getReturnDate();
 
-        if(book.isAvailable())
-            cout << "Available";
-        else
-            cout << "Borrowed";
+    if(book.isAvailable())
+        cout << "Available";
+    else
+        cout << "Borrowed";
 
-        cout << endl;
-    }
+    cout << endl;
+}
 }
 void Library::deleteBook(int id)
 {
@@ -151,6 +155,13 @@ void Library::borrowBook(int id)
 
             book.setAvailability(false);
 
+            std::string issue;
+
+            std::cout << "Enter Issue Date (DD/MM/YYYY): ";
+            std::cin >> issue;
+
+            book.setIssueDate(issue);
+
             book.increaseBorrowCount();
 
             cout << "\nBook Borrowed Successfully.\n";
@@ -173,6 +184,13 @@ void Library::returnBook(int id)
                 cout << "\nBook Already Available.\n";
                 return;
             }
+
+            std::string ret;
+
+            std::cout << "Enter Return Date (DD/MM/YYYY): ";
+            std::cin >> ret;
+
+            book.setReturnDate(ret);
 
             book.setAvailability(true);
 

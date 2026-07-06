@@ -9,6 +9,8 @@ Book::Book()
     publishedYear = 0;
     available = true;
     borrowCount = 0;
+    issueDate = "";
+    returnDate = "";
 }
 
 Book::Book(
@@ -26,7 +28,10 @@ Book::Book(
     this->category = category;
     this->publishedYear = publishedYear;
     this->available = available;
+
     borrowCount = 0;
+    issueDate = "";
+    returnDate = "";
 }
 
 int Book::getId() const
@@ -64,6 +69,16 @@ int Book::getBorrowCount() const
     return borrowCount;
 }
 
+std::string Book::getIssueDate() const
+{
+    return issueDate;
+}
+
+std::string Book::getReturnDate() const
+{
+    return returnDate;
+}
+
 void Book::setTitle(std::string title)
 {
     this->title = title;
@@ -92,4 +107,14 @@ void Book::setAvailability(bool status)
 void Book::increaseBorrowCount()
 {
     borrowCount++;
+}
+
+void Book::setIssueDate(std::string date)
+{
+    issueDate = date;
+}
+
+void Book::setReturnDate(std::string date)
+{
+    returnDate = date;
 }
