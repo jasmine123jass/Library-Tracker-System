@@ -50,6 +50,8 @@ public:
     void showStatistics();
 
     void displayAvailableBooks() const;
+
+    void displayBorrowedBooks() const;
 };
 
 #endif

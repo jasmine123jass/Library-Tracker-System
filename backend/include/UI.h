@@ -35,6 +35,8 @@ public:
     void sortBooksUI();
 
     void displayAvailableBooksUI();
+
+    void displayBorrowedBooksUI();
 };
 
 #endif

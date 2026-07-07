@@ -162,11 +162,12 @@ void UI::showMainMenu()
 
                 cout << "1. Display Books\n";
                 cout << "2. Display Available Books\n";
-                cout << "3. Borrow Book\n";
-                cout << "4. Return Book\n";
-                cout << "5. Search Book\n";
-                cout << "6. Sort Books\n";
-                cout << "7. Back\n\n";
+                cout << "3. Display Borrowed Books\n";
+                cout << "4. Borrow Book\n";
+                cout << "5. Return Book\n";
+                cout << "6. Search Book\n";
+                cout << "7. Sort Books\n";
+                cout << "8. Back\n\n";
 
                 cout << "Choice : ";
                 cin >> userChoice;
@@ -182,22 +183,26 @@ void UI::showMainMenu()
                     break;
 
                 case 3:
-                    borrowBookUI();
+                    displayBorrowedBooksUI();
                     break;
 
                 case 4:
-                    returnBookUI();
+                    borrowBookUI();
                     break;
 
                 case 5:
-                    searchBookUI();
+                    returnBookUI();
                     break;
 
                 case 6:
-                    sortBooksUI();
+                    searchBookUI();
                     break;
 
                 case 7:
+                    sortBooksUI();
+                    break;
+
+                case 8:
                     userMenu = false;
                     break;
 
@@ -404,6 +409,12 @@ void UI::sortBooksUI()
 void UI::displayAvailableBooksUI()
 {
     library.displayAvailableBooks();
+
+    pauseScreen();
+}
+void UI::displayBorrowedBooksUI()
+{
+    library.displayBorrowedBooks();
 
     pauseScreen();
 }
