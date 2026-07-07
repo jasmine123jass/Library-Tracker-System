@@ -392,3 +392,38 @@ void Library::searchByCategory(std::string category)
     if(!found)
         std::cout << "\nNo Books Found.\n";
 }
+void Library::displayAvailableBooks() const
+{
+    bool found = false;
+
+    cout << left;
+
+    cout << setw(8)  << "ID"
+         << setw(30) << "Title"
+         << setw(25) << "Author"
+         << setw(20) << "Category"
+         << setw(10) << "Year"
+         << endl;
+
+    cout << string(95,'-') << endl;
+
+    for(const Book &book : books)
+    {
+        if(book.isAvailable())
+        {
+            found = true;
+
+            cout << setw(8)  << book.getId()
+                 << setw(30) << book.getTitle()
+                 << setw(25) << book.getAuthor()
+                 << setw(20) << book.getCategory()
+                 << setw(10) << book.getPublishedYear()
+                 << endl;
+        }
+    }
+
+    if(!found)
+    {
+        cout << "\nNo Available Books.\n";
+    }
+}

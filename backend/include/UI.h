@@ -33,6 +33,8 @@ public:
     void statisticsUI();
 
     void sortBooksUI();
+
+    void displayAvailableBooksUI();
 };
 
 #endif

@@ -38,6 +38,7 @@ public:
     void returnBook(int id);
 
     void searchBook(std::string keyword);
+
     void searchByAuthor(std::string author);
 
     void searchByCategory(std::string category);
@@ -47,6 +48,8 @@ public:
     void sortByAuthor();
 
     void showStatistics();
+
+    void displayAvailableBooks() const;
 };
 
 #endif
