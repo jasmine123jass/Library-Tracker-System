@@ -62,6 +62,7 @@ void Library::displayBooks() const
         << setw(10) << "Year"
         << setw(15) << "Issue"
         << setw(15) << "Return"
+        << setw(10) << "Fine"
         << setw(15) << "Status"
         << endl;
 
@@ -70,12 +71,13 @@ void Library::displayBooks() const
 for( const Book &book : books)
 {
     cout << setw(8)  << book.getId()
-         << setw(30) << book.getTitle()
-         << setw(25) << book.getAuthor()
-         << setw(20) << book.getCategory()
-         << setw(10) << book.getPublishedYear()
-         << setw(15) << book.getIssueDate()
-         << setw(15) << book.getReturnDate();
+        << setw(30) << book.getTitle()
+        << setw(25) << book.getAuthor()
+        << setw(20) << book.getCategory()
+        << setw(10) << book.getPublishedYear()
+        << setw(15) << book.getIssueDate()
+        << setw(15) << book.getReturnDate()
+        << setw(10) << book.getFine();
 
     if(book.isAvailable())
         cout << "Available";
@@ -191,6 +193,29 @@ void Library::returnBook(int id)
             std::cin >> ret;
 
             book.setReturnDate(ret);
+
+            int days;
+
+            std::cout << "Enter Number of Days Book was Kept : ";
+            std::cin >> days;
+
+            int fine = 0;
+
+            if(days > 7)
+            {
+                fine = (days - 7) * 10;
+            }
+
+            book.setFine(fine);
+
+            if(fine > 0)
+            {
+                std::cout << "\nFine Amount : Rs. " << fine << std::endl;
+            }
+            else
+            {
+               std::cout << "\nNo Fine.\n";
+            }
 
             book.setAvailability(true);
 

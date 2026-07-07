@@ -15,6 +15,7 @@ private:
     int publishedYear;
     bool available;
     int borrowCount;
+    int fine;
 
 public:
 
@@ -50,6 +51,10 @@ public:
     bool isAvailable() const;
 
     int getBorrowCount() const;
+
+    int getFine() const;
+
+    void setFine(int fine);
 
     void setTitle(std::string title);
 

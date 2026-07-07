@@ -30,6 +30,7 @@ Book::Book(
     this->available = available;
 
     borrowCount = 0;
+    fine = 0;
     issueDate = "";
     returnDate = "";
 }
@@ -117,4 +118,13 @@ void Book::setIssueDate(std::string date)
 void Book::setReturnDate(std::string date)
 {
     returnDate = date;
+}
+int Book::getFine() const
+{
+    return fine;
+}
+
+void Book::setFine(int fine)
+{
+    this->fine = fine;
 }
