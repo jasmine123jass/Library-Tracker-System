@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
+#include <cctype>
 
 using namespace std;
 
@@ -350,11 +352,27 @@ void Library::showStatistics()
 }
 void Library::searchByAuthor(std::string author)
 {
+    transform(
+        author.begin(),
+        author.end(),
+        author.begin(),
+        ::tolower
+    );
+
     bool found = false;
 
     for(const Book &book : books)
     {
-        if(book.getAuthor().find(author) != std::string::npos)
+        std::string temp = book.getAuthor();
+
+        transform(
+            temp.begin(),
+            temp.end(),
+            temp.begin(),
+            ::tolower
+        );
+
+        if(temp.find(author) != std::string::npos)
         {
             found = true;
 
@@ -372,11 +390,27 @@ void Library::searchByAuthor(std::string author)
 }
 void Library::searchByCategory(std::string category)
 {
+    transform(
+        category.begin(),
+        category.end(),
+        category.begin(),
+        ::tolower
+    );
+
     bool found = false;
 
     for(const Book &book : books)
     {
-        if(book.getCategory().find(category) != std::string::npos)
+        std::string temp = book.getCategory();
+
+        transform(
+            temp.begin(),
+            temp.end(),
+            temp.begin(),
+            ::tolower
+        );
+
+        if(temp.find(category) != std::string::npos)
         {
             found = true;
 
