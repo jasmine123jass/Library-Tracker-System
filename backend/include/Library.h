@@ -37,6 +37,8 @@ public:
 
     void returnBook(int id);
 
+    void searchById(int id) const;
+
     void searchBook(std::string keyword);
 
     void searchByAuthor(std::string author);

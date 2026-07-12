@@ -496,3 +496,44 @@ void Library::displayBorrowedBooks() const
         cout << "\nNo Borrowed Books.\n";
     }
 }
+void Library::searchById(int id) const
+{
+    bool found = false;
+
+    for(const Book &book : books)
+    {
+        if(book.getId() == id)
+        {
+            found = true;
+
+            cout << "\n====================================\n";
+            cout << "          BOOK FOUND\n";
+            cout << "====================================\n";
+
+            cout << "ID          : " << book.getId() << endl;
+            cout << "Title       : " << book.getTitle() << endl;
+            cout << "Author      : " << book.getAuthor() << endl;
+            cout << "Category    : " << book.getCategory() << endl;
+            cout << "Year        : " << book.getPublishedYear() << endl;
+            cout << "Issue Date  : " << book.getIssueDate() << endl;
+            cout << "Return Date : " << book.getReturnDate() << endl;
+            cout << "Fine        : Rs. " << book.getFine() << endl;
+            cout << "Status      : ";
+
+            if(book.isAvailable())
+                cout << "Available";
+            else
+                cout << "Borrowed";
+
+            cout << endl;
+            cout << "====================================\n";
+
+            return;
+        }
+    }
+
+    if(!found)
+    {
+        cout << "\nBook Not Found.\n";
+    }
+}
